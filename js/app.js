@@ -111,7 +111,7 @@ function eventClick(e) {
 }
 
 function addTableElement(element, content) { 
-  var cell = document.createElement{'tr'};
+  var cell = document.createElement('tr');
 }
 
 function tHeader() { 
