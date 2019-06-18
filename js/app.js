@@ -5,12 +5,12 @@
 // track how many clicks for each image
 // track how many times each image is displayed
 // Upon a click, there should be 3 unique random images that were not duplicate of the previous 3.
-// Use constructor function that creates an object for each image: 
-  // name of image
-  // filepath
-  // number of times it has been shown 
-  // number of times it has been clicked
-// After 25 clicks, turn off event listeners and display a list of all images with how many clicks they received. 
+// Use constructor function that creates an object for each image:
+// name of image
+// filepath
+// number of times it has been shown
+// number of times it has been clicked
+// After 25 clicks, turn off event listeners and display a list of all images with how many clicks they received.
 
 var filepaths = ['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './img/boots.jpg', './img/breakfast.jpg', './img/bubblegum.jpg', './img/chair.jpg', './img/cthulhu.jpg', './img/dog-duck.jpg', './img/dragon.jpg', './img/pen.jpg', './img/pet-sweep.jpg', './img/scissors.jpg', './img/shark.jpg', './img/sweep.png', './img/tauntaun.jpg', './img/unicorn.jpg', './img/usb.gif', './img/water-can.jpg', './img/wine-glass.jpg'];
 
@@ -20,95 +20,91 @@ var imgSection = document.getElementById('image');
 var fourImg = document.getElementById('fourImg');
 var numberOfImg = 3;
 var totalClick = 0;
-var maxClick = 5;
-var indexArray = []; 
-var eventFired = false;
+var maxClick = 15;
+var indexArray = [];
 var imgSrc;
 
-function Products(name, filepath) { 
-  this.name = name; 
-  this.filepath = filepath; 
+function Products(name, filepath) {
+  this.name = name;
+  this.filepath = filepath;
   this.numShown = 0;
-  this.numClick = 0; 
+  this.numClick = 0;
   Products.list.push(this);
 }
 
 Products.list = [];
 
-function getRandomIndex() { 
-  return Math.floor(Math.random() * filepaths.length);
+function getRandomIndex(max) {
+  return Math.floor(Math.random() * max);
 }
 
-function addImg(content) { 
+function addImg(content) {
   var img = document.createElement('img');
   img.className = 'images';
   img.src = content;
   imgSection.appendChild(img);
 }
 
-function removePreviousImg() { 
+function removePreviousImg() {
   var eachImage = document.getElementsByClassName('images');
-  for (var i = eachImage.length; i > 0; i--) { 
+  for (var i = eachImage.length; i > 0; i--) {
     imgSection.removeChild(eachImage[eachImage.length-i]);
   }
 }
 
-function checkDuplicate(indexArray) { 
-  var potentialIndex; 
-  
-  for(var i = 0; i < numberOfImg; i++) { 
-    potentialIndex = getRandomIndex();
-    if(indexArray.includes(potentialIndex) === false) { 
+function checkDuplicate(indexArray) {
+  var potentialIndex;
+
+  for(var i = 0; i < numberOfImg; i++) {
+    potentialIndex = getRandomIndex(filepaths.length);
+    if(indexArray.includes(potentialIndex) === false) {
       Products.list[potentialIndex].numShown += 1;
-      if (indexArray.length < numberOfImg*2) { 
+      if (indexArray.length < numberOfImg*2) {
         indexArray.push(potentialIndex);
-      } else { 
+      } else {
         indexArray.shift();
         indexArray.push(potentialIndex);
       }
-    } else { 
+    } else {
       i--;
     }
   }
   return indexArray;
 }
 
-function displayImages() { 
+function displayImages() {
   indexArray = checkDuplicate(indexArray);
 
-  for (var i = 1; i <= numberOfImg; i++) { 
+  for (var i = 1; i <= numberOfImg; i++) {
     addImg(Products.list[indexArray[indexArray.length-i]].filepath);
   }
 
-  if(numberOfImg === 4) { 
+  if(numberOfImg === 4) {
     for(var j = 0; j < numberOfImg; j++) {
       document.getElementsByClassName('images')[j].style.width = '20%';
     }
   }
-  eventListener(); 
+  eventListener();
 }
 
-function eventListener() { 
+function eventListener() {
   var eachImage = document.getElementsByClassName('images');
 
-  if (totalClick < maxClick) { 
-    for(var i = 0; i < eachImage.length; i++) { 
+  if (totalClick < maxClick) {
+    for(var i = 0; i < eachImage.length; i++) {
       eachImage[i].addEventListener('click', eventClick);
     }
-  } else { 
-    tHeader();
-    for(var j = 0; j < Products.list.length; j++) { 
-      tBody(j);
-    }
+  } else {
+    showChart();
   }
 }
 
-function checkIndex(element) { 
+function checkIndex(element) {
   var test = element.split('').slice(1,filepaths.length).join('');
   return imgSrc.includes(test);
 }
 
-function eventClick(e) { 
+function eventClick(e) {
   totalClick++;
   imgSrc = e.target.src;
   Products.list[filepaths.findIndex(checkIndex)].numClick += 1;
@@ -116,46 +112,100 @@ function eventClick(e) {
   displayImages();
 }
 
-function fourButtonClick(e) { 
-  numberOfImg = 4; 
+function fourButtonClick() {
+  numberOfImg = 4;
   removePreviousImg();
   displayImages();
 }
 
-function addTableElement(element, content, row) { 
-  var cell = document.createElement(element);
-  cell.textContent = content;
-  row.appendChild(cell);
+function showChart() {
+  var labels = [];
+  var numShownData = [];
+  var numClickData = [];
+  var colors = [];
+  var percentage = [];
+
+  var canvas = document.createElement('canvas');
+  var results = document.getElementById('results');
+  canvas.id = 'grouped-bar-chart';
+  results.appendChild(canvas);
+  canvas = document.createElement('canvas');
+  canvas.id = 'percentage-bar-chart';
+  results.appendChild(canvas);
+
+  for (var i = 0; i < Products.list.length; i++) {
+    labels.push(Products.list[i].name);
+    numShownData.push(Products.list[i].numShown);
+    numClickData.push(Products.list[i].numClick);
+    percentage.push(Products.list[i].numClick/Products.list[i].numShown);
+    var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    colors.push(randomColor);
+  }
+
+  new Chart(document.getElementById('grouped-bar-chart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Times Clicked',
+          backgroundColor: colors[getRandomIndex(colors.length)],
+          data: numClickData
+        }, {
+          label: 'Times Shown',
+          backgroundColor: colors[getRandomIndex(colors.length)],
+          data: numShownData
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Comparison of Times Clicked and Times Shown For Each Product'
+      },
+      responsive: false,
+      maintainAspectRatio: true,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1,
+            }
+          }
+        ]
+      }
+    }
+  });
+
+  new Chart(document.getElementById('percentage-bar-chart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Percentage of clicks based on number of times shown',
+          backgroundColor: colors,
+          data: percentage
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Percentage Of Clicks Based On Number Of Times Shown'
+      },
+      legend: { display: false},
+      responsive: false,
+      maintainAspectRatio: true,
+    }
+  });
 }
 
-function tHeader() { 
-  var tableHeader = document.getElementById('table-header');
-  var tableRow = document.createElement('tr');
-
-  addTableElement('th', 'Name of Product', tableRow);
-  addTableElement('td', 'Number of times products shown', tableRow);
-  addTableElement('td', 'Number of times products clicked', tableRow);
-  addTableElement('td', 'Percentage of times product is clicked when it is shown', tableRow);
-
-  tableHeader.appendChild(tableRow);
-}
-
-function tBody(index) { 
-  var tableBody = document.getElementById('table-body');
-  var tableRow = document.createElement('tr');
-
-  addTableElement('td', Products.list[index].name, tableRow);
-  addTableElement('td', Products.list[index].numShown, tableRow);
-  addTableElement('td', Products.list[index].numClick, tableRow);
-  addTableElement('td', Products.list[index].numClick / Products.list[index].numShown, tableRow);
-
-  tableBody.appendChild(tableRow);
-}
-
-for (var i = 0; i < filepaths.length; i++) { 
+for (var i = 0; i < filepaths.length; i++) {
   new Products(names[i],filepaths[i]);
 }
- 
+
 displayImages();
 
 fourImg.addEventListener('click', fourButtonClick);

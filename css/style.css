@@ -43,7 +43,7 @@ main {
   margin: 0 0.5em;
 }
 
-.results { 
+#results { 
   width: 100%; 
   /* background: #DDD; */
   text-align: center;
@@ -58,31 +58,9 @@ main {
   padding: 0.8em;
 }
 
-table { 
-  margin-top: 10px;
-  width: 100%;
+#grouped-bar-chart, #percentage-bar-chart { 
   margin: auto;
-  margin-bottom: 50px;
-  border: solid 1px #444;
-  box-shadow: 0px 4px 16px;
-}
-
-th { 
-  font-size: 1em;
-  font-weight: bold;
-  background-color: #AAA;
-  padding: 0px 5px;
-  padding-top: 10px;
-}
-
-td { 
-  padding: 0.6em;
-}
-
-tr { 
-  border-bottom: 1px solid #444;
-}
-
-tr:nth-child(even) { 
-  background-color: #DDD;
+  margin-top: 2em;
+  width: 800px;
+  height: 400px;
 }
