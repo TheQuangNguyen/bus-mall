@@ -1,0 +1,50 @@
+html { 
+  box-sizing: border-box;
+}
+
+header { 
+  width: 100%;
+  background: #555;
+  overflow: hidden;
+}
+
+header ul > li a{ 
+  float: right;
+  padding: 10px 2em;
+  border: 1px solid orange;
+  margin: 0 1em;
+  border-radius: 40px;
+  background: orange;
+  text-decoration: none;
+}
+
+header h1 { 
+  float: left;
+  font-size: 2rem;
+  color: orange;
+  margin: 0px 0.5em;
+  display: inline-block;
+}
+
+main { 
+  width: 90%;
+  margin: auto;
+}
+
+#image { 
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+#image img { 
+  width: 30%;
+  margin: 0 0.5em;
+}
+
+.results { 
+  width: 100%; 
+  background: #DDD;
+  text-align: center;
+  margin: 2em 0;
+}
+
