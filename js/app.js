@@ -16,8 +16,9 @@ var filepaths = ['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './i
 var names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 var imgSection = document.getElementById('image');
 var numberOfImg = 3;
-var numClick = -1;
+var totalClick = 0;
 var indexArray = []; 
+var eventFired = false;
 
 function Products(name, filepath) { 
   this.name = name; 
@@ -38,6 +39,13 @@ function addImg(content) {
   img.className = 'images';
   img.src = content;
   imgSection.appendChild(img);
+}
+
+function removePreviousImg() { 
+  var eachImage = document.getElementsByClassName('images');
+  for (var i = eachImage.length; i > 0; i--) { 
+    imgSection.removeChild(eachImage[eachImage.length-i]);
+  }
 }
 
 function checkDuplicate(indexArray) { 
@@ -66,13 +74,34 @@ function displayImages() {
   for (var i = 1; i <= numberOfImg; i++) { 
     addImg(Products.list[indexArray[indexArray.length-i]].filepath);
   }
+
+  eventListener(); 
+}
+
+function eventListener() { 
+  var eachImage = document.getElementsByClassName('images');
+  for(var i = 0; i < eachImage.length; i++) { 
+    eachImage[i].addEventListener('click', eventClick);
+  }
+}
+
+function eventClick(e) { 
+  // Products.list[filepaths.indexOf(e.target.src.value)].numClick += 1;
+  console.log(e.target.src);
+  console.log(filepaths.indexOf(e.target.src));
+  removePreviousImg();
+  displayImages();
+  totalClick++;
 }
 
 for (var i = 0; i < filepaths.length; i++) { 
   new Products(names[i],filepaths[i]);
 }
-
+ 
 displayImages();
+
+
+
 
 
 
@@ -87,11 +116,7 @@ displayImages();
 //   }
 // }
 
-// function removePreviousImages(parentElement) { 
-//   for (var i = 0; i < numberOfImg; i++) { 
-//     parentElement.removeChild(eachImage[i]);
-//   }
-// }
+
 
 // function displayRandomImages() { 
 //   var randomImageIndex;
