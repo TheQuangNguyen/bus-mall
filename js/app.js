@@ -17,6 +17,7 @@ var filepaths = ['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './i
 var names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 var imgSection = document.getElementById('image');
+var fourImg = document.getElementById('fourImg');
 var table
 var numberOfImg = 3;
 var totalClick = 0;
@@ -80,11 +81,17 @@ function displayImages() {
     addImg(Products.list[indexArray[indexArray.length-i]].filepath);
   }
 
+  if(numberOfImg === 4) { 
+    for(var j = 0; j < numberOfImg; j++) {
+      document.getElementsByClassName('images')[j].style.width = '20%';
+    }
+  }
   eventListener(); 
 }
 
 function eventListener() { 
   var eachImage = document.getElementsByClassName('images');
+
   if (totalClick < maxClick) { 
     for(var i = 0; i < eachImage.length; i++) { 
       eachImage[i].addEventListener('click', eventClick);
@@ -106,6 +113,12 @@ function eventClick(e) {
   totalClick++;
   imgSrc = e.target.src;
   Products.list[filepaths.findIndex(checkIndex)].numClick += 1;
+  removePreviousImg();
+  displayImages();
+}
+
+function fourButtonClick(e) { 
+  numberOfImg = 4; 
   removePreviousImg();
   displayImages();
 }
@@ -145,3 +158,5 @@ for (var i = 0; i < filepaths.length; i++) {
 }
  
 displayImages();
+
+fourImg.addEventListener('click', fourButtonClick);

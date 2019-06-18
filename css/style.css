@@ -29,11 +29,13 @@ header h1 {
 main { 
   width: 90%;
   margin: auto;
+  text-align: center;
 }
 
 #image { 
   margin-top: 2em;
   margin-bottom: 2em;
+  text-align: center;
 }
 
 #image img { 
@@ -46,5 +48,13 @@ main {
   background: #DDD;
   text-align: center;
   margin: 2em 0;
+}
+
+#fourImg { 
+  margin-top: 2em;
+  display: inline-block;
+  background: orange;
+  border-radius: 40px;
+  padding: 0.8em;
 }
 
