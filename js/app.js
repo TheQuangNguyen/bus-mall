@@ -18,7 +18,6 @@ var names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'ch
 
 var imgSection = document.getElementById('image');
 var fourImg = document.getElementById('fourImg');
-var table
 var numberOfImg = 3;
 var totalClick = 0;
 var maxClick = 5;
