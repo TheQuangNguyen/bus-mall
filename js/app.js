@@ -14,7 +14,6 @@
 
 var filepaths = ['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './img/boots.jpg', './img/breakfast.jpg', './img/bubblegum.jpg', './img/chair.jpg', './img/cthulhu.jpg', './img/dog-duck.jpg', './img/dragon.jpg', './img/pen.jpg', './img/pet-sweep.jpg', './img/scissors.jpg', './img/shark.jpg', './img/sweep.png', './img/tauntaun.jpg', './img/unicorn.jpg', './img/usb.gif', './img/water-can.jpg', './img/wine-glass.jpg'];
 
-// var filepaths = ['/img/bag.jpg', '/img/banana.jpg', '/img/bathroom.jpg', '/img/boots.jpg', '/img/breakfast.jpg', '/img/bubblegum.jpg', '/img/chair.jpg', '/img/cthulhu.jpg', '/img/dog-duck.jpg', '/img/dragon.jpg', '/img/pen.jpg', '/img/pet-sweep.jpg', '/img/scissors.jpg', '/img/shark.jpg', '/img/sweep.png', '/img/tauntaun.jpg', '/img/unicorn.jpg', '/img/usb.gif', '/img/water-can.jpg', '/img/wine-glass.jpg'];
 var names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 var imgSection = document.getElementById('image');
@@ -111,28 +110,20 @@ function eventClick(e) {
   displayImages();
 }
 
-function addTableElement(element, content) { 
-  var cell = document.createElement('tr');
+function addTableElement(element, content, row) { 
+  var cell = document.createElement(element);
+  cell.textContent = content;
+  row.appendChild(cell);
 }
 
 function tHeader() { 
   var tableHeader = document.getElementById('table-header');
   var tableRow = document.createElement('tr');
-  var cell = document.createElement('th');
-  cell.textContent = 'Name of Product';
-  tableRow.appendChild(cell);
-  
-  cell = document.createElement('td');
-  cell.textContent = 'Number of times products shown';
-  tableRow.appendChild(cell);
 
-  cell = document.createElement('td');
-  cell.textContent = 'Number of times products clicked';
-  tableRow.appendChild(cell);
-
-  cell = document.createElement('td');
-  cell.textContent = 'Percentage of times product is clicked when it is shown';
-  tableRow.appendChild(cell);
+  addTableElement('th', 'Name of Product', tableRow);
+  addTableElement('td', 'Number of times products shown', tableRow);
+  addTableElement('td', 'Number of times products clicked', tableRow);
+  addTableElement('td', 'Percentage of times product is clicked when it is shown', tableRow);
 
   tableHeader.appendChild(tableRow);
 }
@@ -140,21 +131,11 @@ function tHeader() {
 function tBody(index) { 
   var tableBody = document.getElementById('table-body');
   var tableRow = document.createElement('tr');
-  var cell = document.createElement('td');
-  cell.textContent = Products.list[index].name;
-  tableRow.appendChild(cell);
 
-  cell = document.createElement('td');
-  cell.textContent = Products.list[index].numShown;
-  tableRow.appendChild(cell);
-
-  cell = document.createElement('td');
-  cell.textContent = Products.list[index].numClick;
-  tableRow.appendChild(cell);
-
-  cell = document.createElement('td');
-  cell.textContent = Products.list[index].numClick / Products.list[index].numShown;
-  tableRow.appendChild(cell);
+  addTableElement('td', Products.list[index].name, tableRow);
+  addTableElement('td', Products.list[index].numShown, tableRow);
+  addTableElement('td', Products.list[index].numClick, tableRow);
+  addTableElement('td', Products.list[index].numClick / Products.list[index].numShown, tableRow);
 
   tableBody.appendChild(tableRow);
 }
