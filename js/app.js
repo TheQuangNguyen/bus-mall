@@ -20,7 +20,7 @@ var imgSection = document.getElementById('image');
 var fourImg = document.getElementById('fourImg');
 var numberOfImg = 3;
 var totalClick = 0;
-var maxClick = 15;
+var maxClick = 25;
 var indexArray = [];
 var imgSrc;
 
@@ -40,9 +40,12 @@ function getRandomIndex(max) {
 
 function addImg(content) {
   var img = document.createElement('img');
+  // var caption = document.createElement('p');
   img.className = 'images';
   img.src = content;
+  // caption.textContent = name;
   imgSection.appendChild(img);
+  // imgSection.appendChild(caption);
 }
 
 function removePreviousImg() {

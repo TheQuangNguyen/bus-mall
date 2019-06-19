@@ -38,6 +38,10 @@ main {
   text-align: center;
 }
 
+#image > p { 
+  display: inline-block;
+}
+
 #image img { 
   width: 30%;
   margin: 0 0.5em;
