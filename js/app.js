@@ -94,6 +94,7 @@ function eventListener() {
   var eachImage = document.getElementsByClassName('images');
 
   if (totalClick < maxClick) {
+    // TODO add figcaption to every image
     for(var i = 0; i < eachImage.length; i++) {
       eachImage[i].addEventListener('click', eventClick);
     }
@@ -140,7 +141,7 @@ function showChart() {
     labels.push(Products.list[i].name);
     numShownData.push(Products.list[i].numShown);
     numClickData.push(Products.list[i].numClick);
-    percentage.push(Products.list[i].numClick/Products.list[i].numShown);
+    percentage.push((Products.list[i].numClick/Products.list[i].numShown) * 100);
     var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     colors.push(randomColor);
   }
