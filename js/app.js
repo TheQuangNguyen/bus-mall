@@ -149,6 +149,14 @@ function showChart() {
     colors.push(randomColor);
   }
 
+  numShownData.sort(function(a,b) { 
+    return b - a;
+  });
+
+  numClickData.sort(function(a,b) { 
+    return b - a;
+  });
+
   setLocalStorage(previousData);
 
   new Chart(document.getElementById('grouped-bar-chart'), {
