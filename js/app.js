@@ -20,7 +20,7 @@ var imgSection = document.getElementById('image');
 var fourImg = document.getElementById('fourImg');
 var numberOfImg = 3;
 var totalClick = 0;
-var maxClick = 25;
+var maxClick = 5;
 var indexArray = [];
 var imgSrc;
 
@@ -61,7 +61,9 @@ function checkDuplicate(indexArray) {
   for(var i = 0; i < numberOfImg; i++) {
     potentialIndex = getRandomIndex(filepaths.length);
     if(indexArray.includes(potentialIndex) === false) {
-      Products.list[potentialIndex].numShown += 1;
+      if(totalClick < maxClick) { 
+        Products.list[potentialIndex].numShown += 1;
+      }
       if (indexArray.length < numberOfImg*2) {
         indexArray.push(potentialIndex);
       } else {
@@ -128,6 +130,7 @@ function showChart() {
   var numClickData = [];
   var colors = [];
   var percentage = [];
+  var previousData = combineData();
 
   var canvas = document.createElement('canvas');
   var results = document.getElementById('results');
@@ -138,13 +141,15 @@ function showChart() {
   results.appendChild(canvas);
 
   for (var i = 0; i < Products.list.length; i++) {
-    labels.push(Products.list[i].name);
-    numShownData.push(Products.list[i].numShown);
-    numClickData.push(Products.list[i].numClick);
-    percentage.push((Products.list[i].numClick/Products.list[i].numShown) * 100);
+    labels.push(previousData[i].name);
+    numShownData.push(previousData[i].numShown);
+    numClickData.push(previousData[i].numClick);
+    percentage.push((previousData[i].numClick/previousData[i].numShown) * 100);
     var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     colors.push(randomColor);
   }
+
+  setLocalStorage(previousData);
 
   new Chart(document.getElementById('grouped-bar-chart'), {
     type: 'bar',
@@ -206,10 +211,41 @@ function showChart() {
   });
 }
 
-for (var i = 0; i < filepaths.length; i++) {
-  new Products(names[i],filepaths[i]);
+function getLocalStorage() {
+  var lsData = localStorage.getItem('savedData');
+  if (lsData) {
+    var previousData = JSON.parse(lsData);
+    return previousData;
+  } 
 }
 
+function combineData() {
+  var previousData = getLocalStorage();
+  for (var i = 0; i < previousData.length; i++) {
+    previousData[i].numClick = previousData[i].numClick + Products.list[i].numClick;
+    previousData[i].numShown = previousData[i].numShown + Products.list[i].numShown;
+  }
+
+  localStorage.setItem('savedData', previousData);
+  return previousData;
+}
+
+function setLocalStorage(previousData) { 
+  var savedData = JSON.stringify(previousData);
+  localStorage.setItem('savedData', savedData);
+}
+
+function createProducts() { 
+  for (var i = 0; i < filepaths.length; i++) {
+    new Products(names[i],filepaths[i]);
+  }
+  if (!localStorage.getItem('savedData')) { 
+    var savedData = JSON.stringify(Products.list);
+    localStorage.setItem('savedData', savedData);
+  }
+}
+
+createProducts();
 displayImages();
 
 fourImg.addEventListener('click', fourButtonClick);
