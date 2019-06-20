@@ -20,7 +20,7 @@ var imgSection = document.getElementById('image');
 var fourImg = document.getElementById('fourImg');
 var numberOfImg = 3;
 var totalClick = 0;
-var maxClick = 5;
+var maxClick = 25;
 var indexArray = [];
 var imgSrc;
 
@@ -61,7 +61,7 @@ function checkDuplicate(indexArray) {
   for(var i = 0; i < numberOfImg; i++) {
     potentialIndex = getRandomIndex(filepaths.length);
     if(indexArray.includes(potentialIndex) === false) {
-      if(totalClick < maxClick) { 
+      if(totalClick < maxClick) {
         Products.list[potentialIndex].numShown += 1;
       }
       if (indexArray.length < numberOfImg*2) {
@@ -216,7 +216,7 @@ function getLocalStorage() {
   if (lsData) {
     var previousData = JSON.parse(lsData);
     return previousData;
-  } 
+  }
 }
 
 function combineData() {
@@ -230,16 +230,16 @@ function combineData() {
   return previousData;
 }
 
-function setLocalStorage(previousData) { 
+function setLocalStorage(previousData) {
   var savedData = JSON.stringify(previousData);
   localStorage.setItem('savedData', savedData);
 }
 
-function createProducts() { 
+function createProducts() {
   for (var i = 0; i < filepaths.length; i++) {
     new Products(names[i],filepaths[i]);
   }
-  if (!localStorage.getItem('savedData')) { 
+  if (!localStorage.getItem('savedData')) {
     var savedData = JSON.stringify(Products.list);
     localStorage.setItem('savedData', savedData);
   }
